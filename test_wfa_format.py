@@ -6,6 +6,7 @@ Test script to verify WFA_Format worksheet is correctly created
 import os
 import sys
 import pandas as pd
+import tempfile
 from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(__file__))
@@ -14,9 +15,8 @@ import extract_bok_statements
 def test_wfa_format_creation():
     """Test that the WFA_Format worksheet is created correctly"""
     
-    # Create a temporary output directory
-    test_output_dir = Path("/tmp/test_wfa_output")
-    test_output_dir.mkdir(exist_ok=True)
+    # Create a temporary output directory (cross-platform)
+    test_output_dir = Path(tempfile.mkdtemp(prefix="test_wfa_output_"))
     output_file = test_output_dir / "test_output.xlsx"
     
     # Get the current directory with sample PDFs
