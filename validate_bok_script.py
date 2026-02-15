@@ -110,8 +110,12 @@ def test_main_function():
 def test_excel_title():
     """Test that Excel title is correct"""
     content = read_file()
-    if 'BOK Financial Statement Summary - October 2025' in content:
-        print("✓ Excel title is correct")
+    # Check for dynamic title (should use datetime formatting now)
+    if 'BOK Financial Statement Summary' in content and ('title_date' in content or 'strftime' in content):
+        print("✓ Excel title is correct (using dynamic date)")
+        return True
+    elif 'BOK Financial Statement Summary - October 2025' in content:
+        print("⚠ Excel title uses hardcoded date (consider making dynamic)")
         return True
     else:
         print("✗ Excel title incorrect or missing")

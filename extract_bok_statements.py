@@ -253,8 +253,9 @@ class BOKStatementParser:
                 'border': 1
             })
             
-            # Title
-            worksheet.merge_range('A1:F1', 'BOK Financial Statement Summary - October 2025', title_fmt)
+            # Title - use current month and year
+            title_date = datetime.now().strftime('%B %Y')
+            worksheet.merge_range('A1:F1', f'BOK Financial Statement Summary - {title_date}', title_fmt)
             
             # Column widths
             worksheet.set_column('A:A', 55)  # Filename
@@ -324,9 +325,13 @@ def select_source_folder():
     root = tk.Tk()
     root.withdraw()  # Hide the main window
     
+    # Use current year in default path
+    current_year = datetime.now().year
+    default_path = fr"\\server2\Accounting & Reinsurance\12 Bank (Trust) Statements\{current_year}\Holding"
+    
     folder_path = filedialog.askdirectory(
         title="Select Folder Containing PDF Bank Statements",
-        initialdir=r"\\server2\Accounting & Reinsurance\12 Bank (Trust) Statements\2025\Holding"
+        initialdir=default_path
     )
     
     root.destroy()
