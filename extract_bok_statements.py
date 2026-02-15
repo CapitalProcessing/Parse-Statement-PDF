@@ -273,6 +273,28 @@ class BOKStatementParser:
             last_row = len(df) + 3
             worksheet.write(last_row, 2, 'TOTAL:', total_label_fmt)
             worksheet.write(last_row, 3, total_value, total_value_fmt)
+            
+            # Create second worksheet for WFA-compatible format (paste-ready)
+            df_wfa_format = pd.DataFrame({
+                'A': [''] * len(df),
+                'B': [''] * len(df),
+                'C': df['Account Number'],  # Column C = Account Number
+                'D': [''] * len(df),
+                'E': [''] * len(df),
+                'F': [''] * len(df),
+                'G': [''] * len(df),
+                'H': [''] * len(df),
+                'I': [''] * len(df),
+                'J': df['Closing Value'],   # Column J = Market Value
+            })
+            
+            # Write to second sheet without headers
+            df_wfa_format.to_excel(writer, sheet_name='WFA_Format', index=False, header=False)
+            
+            # Format column J as currency and set column widths
+            worksheet_wfa = writer.sheets['WFA_Format']
+            worksheet_wfa.set_column('C:C', 20)  # Account Number
+            worksheet_wfa.set_column('J:J', 15, money_fmt)  # Market Value with currency format
         
         # Print summary
         print(f"\n{'='*80}")
